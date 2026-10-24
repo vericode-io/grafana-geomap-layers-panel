@@ -1,0 +1,551 @@
+{
+  "uid": "geomap-layer-types",
+  "title": "Geomap — tipos de layer",
+  "tags": [
+    "geomap",
+    "ons"
+  ],
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "version": 2,
+  "refresh": "",
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "editable": true,
+  "links": [],
+  "annotations": {
+    "list": []
+  },
+  "templating": {
+    "list": [
+      {
+        "name": "mapLayers",
+        "type": "custom",
+        "label": "Layers",
+        "description": "Define quais layers começam visíveis nos mapas. A combo atualiza os painéis; a legenda Layers do painel não altera esta variável. Presets usam Label : LayerA|LayerB (ex.: Principal = Usinas e Rota). All = todas visíveis. URL: var-mapLayers.",
+        "hide": 0,
+        "multi": true,
+        "includeAll": true,
+        "allValue": "",
+        "query": "Principal (Usinas & Rotas) : Usinas|Rota, Basemap, Satelite, Regioes, Usinas, Rota",
+        "current": {
+          "selected": true,
+          "text": ["All"],
+          "value": ["$__all"]
+        },
+        "options": [
+          { "selected": true, "text": "All", "value": "$__all" },
+          { "selected": false, "text": "Principal (Usinas & Rotas)", "value": "Usinas|Rota" },
+          { "selected": false, "text": "Basemap", "value": "Basemap" },
+          { "selected": false, "text": "Satelite", "value": "Satelite" },
+          { "selected": false, "text": "Regioes", "value": "Regioes" },
+          { "selected": false, "text": "Usinas", "value": "Usinas" },
+          { "selected": false, "text": "Rota", "value": "Rota" }
+        ]
+      }
+    ]
+  },
+  "panels": [
+    {
+      "id": 5,
+      "type": "vericode-geomaplayers-panel",
+      "title": "Camadas — clique para mostrar ou ocultar",
+      "description": "Basemap, Satelite, Usinas, Regioes, Rota. Combo mapLayers: Principal (Usinas & Rotas).",
+      "gridPos": {
+        "h": 22,
+        "w": 8,
+        "x": 0,
+        "y": 0
+      },
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "testdata"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "testdata"
+          },
+          "scenarioId": "csv_content",
+          "csvContent": "latitude,longitude,nome\n-3.83,-49.67,Tucurui\n-3.12,-51.77,Belo Monte\n-25.41,-54.59,Itaipu\n-20.67,-46.32,Furnas\n-9.62,-37.79,Xingo\n-9.43,-40.83,Sobradinho\n-20.38,-51.34,Ilha Solteira\n-22.91,-43.17,Rio de Janeiro"
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "testdata"
+          },
+          "scenarioId": "csv_content",
+          "csvContent": "latitude,longitude,ponto\n-25.55,-54.58,Foz do Iguacu\n-24.96,-53.46,Cascavel\n-23.30,-51.16,Londrina\n-22.91,-47.06,Campinas\n-23.55,-46.63,Sao Paulo\n-22.91,-43.17,Rio de Janeiro"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "options": {
+        "basemap": {
+          "type": "default",
+          "name": "Basemap",
+          "config": {}
+        },
+        "controls": {
+          "mouseWheelZoom": false,
+          "showAttribution": true,
+          "showDebug": false,
+          "showMeasure": false,
+          "showScale": true,
+          "showZoom": true,
+          "syncLayersVariable": true,
+          "layersVariableName": "mapLayers"
+        },
+        "tooltip": {
+          "mode": "details"
+        },
+        "view": {
+          "id": "coords",
+          "lat": -14.2,
+          "lon": -52,
+          "zoom": 4,
+          "shared": false
+        },
+        "layers": [
+          {
+            "type": "xyz",
+            "name": "Satelite",
+            "opacity": 1,
+            "tooltip": false,
+            "config": {
+              "url": "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+              "attribution": "Tiles © Esri"
+            }
+          },
+          {
+            "type": "markers",
+            "name": "Usinas",
+            "tooltip": true,
+            "location": {
+              "mode": "coords",
+              "latitude": "latitude",
+              "longitude": "longitude"
+            },
+            "config": {
+              "showLegend": true,
+              "style": {
+                "color": {
+                  "fixed": "red"
+                },
+                "opacity": 1,
+                "size": {
+                  "fixed": 12,
+                  "min": 5,
+                  "max": 20
+                },
+                "symbol": {
+                  "mode": "fixed",
+                  "fixed": "img/icons/marker/circle.svg"
+                },
+                "symbolAlign": {
+                  "horizontal": "center",
+                  "vertical": "center"
+                },
+                "text": {
+                  "mode": "field",
+                  "field": "nome"
+                },
+                "textConfig": {
+                  "fontSize": 12,
+                  "offsetX": 10,
+                  "offsetY": 0,
+                  "textAlign": "left",
+                  "textBaseline": "middle"
+                },
+                "rotation": {
+                  "fixed": 0,
+                  "mode": "mod",
+                  "min": -360,
+                  "max": 360
+                }
+              }
+            },
+            "filterData": {
+              "id": "byRefId",
+              "options": "A"
+            }
+          },
+          {
+            "type": "geojson",
+            "name": "Regioes",
+            "tooltip": true,
+            "config": {
+              "src": "public/maps/ons-demo.geojson",
+              "rules": [],
+              "style": {
+                "color": {
+                  "fixed": "orange"
+                },
+                "opacity": 0.45,
+                "lineWidth": 2
+              }
+            }
+          },
+          {
+            "type": "route",
+            "name": "Rota",
+            "tooltip": true,
+            "location": {
+              "mode": "coords",
+              "latitude": "latitude",
+              "longitude": "longitude"
+            },
+            "config": {
+              "arrow": 1,
+              "style": {
+                "color": {
+                  "fixed": "red"
+                },
+                "opacity": 1,
+                "lineWidth": 4,
+                "size": {
+                  "fixed": 6,
+                  "min": 2,
+                  "max": 15
+                }
+              }
+            },
+            "filterData": {
+              "id": "byRefId",
+              "options": "B"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": 1,
+      "type": "vericode-geomaplayers-panel",
+      "title": "1. Markers",
+      "description": "Cada linha da query vira um ponto. Latitude e longitude vêm dos campos da query.",
+      "gridPos": {
+        "h": 11,
+        "w": 8,
+        "x": 8,
+        "y": 0
+      },
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "testdata"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "testdata"
+          },
+          "scenarioId": "csv_content",
+          "csvContent": "latitude,longitude,nome\n-3.83,-49.67,Tucurui\n-3.12,-51.77,Belo Monte\n-25.41,-54.59,Itaipu\n-20.67,-46.32,Furnas\n-9.62,-37.79,Xingo\n-9.43,-40.83,Sobradinho\n-20.38,-51.34,Ilha Solteira\n-22.91,-43.17,Rio de Janeiro"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "options": {
+        "basemap": {
+          "type": "default",
+          "name": "Basemap",
+          "config": {}
+        },
+        "controls": {
+          "mouseWheelZoom": false,
+          "showAttribution": true,
+          "showDebug": false,
+          "showMeasure": false,
+          "showScale": true,
+          "showZoom": true,
+          "syncLayersVariable": true,
+          "layersVariableName": "mapLayers"
+        },
+        "tooltip": {
+          "mode": "details"
+        },
+        "view": {
+          "id": "coords",
+          "lat": -14.2,
+          "lon": -52,
+          "zoom": 4,
+          "shared": false
+        },
+        "layers": [
+          {
+            "type": "markers",
+            "name": "Usinas",
+            "tooltip": true,
+            "location": {
+              "mode": "coords",
+              "latitude": "latitude",
+              "longitude": "longitude"
+            },
+            "config": {
+              "showLegend": true,
+              "style": {
+                "color": {
+                  "fixed": "red"
+                },
+                "opacity": 1,
+                "size": {
+                  "fixed": 12,
+                  "min": 5,
+                  "max": 20
+                },
+                "symbol": {
+                  "mode": "fixed",
+                  "fixed": "img/icons/marker/circle.svg"
+                },
+                "symbolAlign": {
+                  "horizontal": "center",
+                  "vertical": "center"
+                },
+                "text": {
+                  "mode": "field",
+                  "field": "nome"
+                },
+                "textConfig": {
+                  "fontSize": 12,
+                  "offsetX": 10,
+                  "offsetY": 0,
+                  "textAlign": "left",
+                  "textBaseline": "middle"
+                },
+                "rotation": {
+                  "fixed": 0,
+                  "mode": "mod",
+                  "min": -360,
+                  "max": 360
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "type": "vericode-geomaplayers-panel",
+      "title": "2. GeoJSON",
+      "description": "Polígonos carregados de um arquivo GeoJSON. Não usa query.",
+      "gridPos": {
+        "h": 11,
+        "w": 8,
+        "x": 16,
+        "y": 0
+      },
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "testdata"
+      },
+      "targets": [],
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "options": {
+        "basemap": {
+          "type": "default",
+          "name": "Basemap",
+          "config": {}
+        },
+        "controls": {
+          "mouseWheelZoom": false,
+          "showAttribution": true,
+          "showDebug": false,
+          "showMeasure": false,
+          "showScale": true,
+          "showZoom": true,
+          "syncLayersVariable": true,
+          "layersVariableName": "mapLayers"
+        },
+        "tooltip": {
+          "mode": "details"
+        },
+        "view": {
+          "id": "coords",
+          "lat": -14.2,
+          "lon": -52,
+          "zoom": 4,
+          "shared": false
+        },
+        "layers": [
+          {
+            "type": "geojson",
+            "name": "Regioes",
+            "tooltip": true,
+            "config": {
+              "src": "public/maps/ons-demo.geojson",
+              "rules": [],
+              "style": {
+                "color": {
+                  "fixed": "orange"
+                },
+                "opacity": 0.45,
+                "lineWidth": 2
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": 3,
+      "type": "vericode-geomaplayers-panel",
+      "title": "3. Route",
+      "description": "Os pontos da query são ligados na ordem das linhas, formando uma rota com seta.",
+      "gridPos": {
+        "h": 11,
+        "w": 8,
+        "x": 8,
+        "y": 11
+      },
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "testdata"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "testdata"
+          },
+          "scenarioId": "csv_content",
+          "csvContent": "latitude,longitude,ponto\n-25.55,-54.58,Foz do Iguacu\n-24.96,-53.46,Cascavel\n-23.30,-51.16,Londrina\n-22.91,-47.06,Campinas\n-23.55,-46.63,Sao Paulo\n-22.91,-43.17,Rio de Janeiro"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "options": {
+        "basemap": {
+          "type": "default",
+          "name": "Basemap",
+          "config": {}
+        },
+        "controls": {
+          "mouseWheelZoom": false,
+          "showAttribution": true,
+          "showDebug": false,
+          "showMeasure": false,
+          "showScale": true,
+          "showZoom": true,
+          "syncLayersVariable": true,
+          "layersVariableName": "mapLayers"
+        },
+        "tooltip": {
+          "mode": "details"
+        },
+        "view": {
+          "id": "coords",
+          "lat": -24.2,
+          "lon": -49,
+          "zoom": 5.4,
+          "shared": false
+        },
+        "layers": [
+          {
+            "type": "route",
+            "name": "Rota",
+            "tooltip": true,
+            "location": {
+              "mode": "coords",
+              "latitude": "latitude",
+              "longitude": "longitude"
+            },
+            "config": {
+              "arrow": 1,
+              "style": {
+                "color": {
+                  "fixed": "red"
+                },
+                "opacity": 1,
+                "lineWidth": 4,
+                "size": {
+                  "fixed": 6,
+                  "min": 2,
+                  "max": 15
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": 4,
+      "type": "vericode-geomaplayers-panel",
+      "title": "4. Tile (XYZ)",
+      "description": "Camada de tiles XYZ. Aqui é a imagem de satélite da ArcGIS, por cima do mapa base.",
+      "gridPos": {
+        "h": 11,
+        "w": 8,
+        "x": 16,
+        "y": 11
+      },
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "testdata"
+      },
+      "targets": [],
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "options": {
+        "basemap": {
+          "type": "default",
+          "name": "Basemap",
+          "config": {}
+        },
+        "controls": {
+          "mouseWheelZoom": false,
+          "showAttribution": true,
+          "showDebug": false,
+          "showMeasure": false,
+          "showScale": true,
+          "showZoom": true,
+          "syncLayersVariable": true,
+          "layersVariableName": "mapLayers"
+        },
+        "tooltip": {
+          "mode": "details"
+        },
+        "view": {
+          "id": "coords",
+          "lat": -14.2,
+          "lon": -52,
+          "zoom": 4,
+          "shared": false
+        },
+        "layers": [
+          {
+            "type": "xyz",
+            "name": "Satelite",
+            "opacity": 1,
+            "tooltip": false,
+            "config": {
+              "url": "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+              "attribution": "Tiles © Esri"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "$schema": "https://raw.githubusercontent.com/grafana/grafana/main/docs/sources/developers/plugins/plugin.schema.json",
+  "type": "panel",
+  "name": "Geomap Layers",
+  "id": "vericode-geomaplayers-panel",
+  "skipDataQuery": false,
+  "info": {
+    "description": "Geomap with show/hide layer legend.",
+    "author": {
+      "name": "Vericode & ONS"
+    },
+    "keywords": ["geomap", "map", "layer", "panel"],
+    "logos": {
+      "small": "img/logo.svg",
+      "large": "img/logo.svg"
+    },
+    "links": [
+      {
+        "name": "repository",
+        "url": "https://github.com/vericode-io/grafana-geomap-layers"
+      },
+      {
+        "name": "documentation",
+        "url": "https://github.com/vericode-io/grafana-geomap-layers/blob/main/README.md"
+      },
+      {
+        "name": "raise issue",
+        "url": "https://github.com/vericode-io/grafana-geomap-layers/issues"
+      },
+      {
+        "name": "license",
+        "url": "https://github.com/vericode-io/grafana-geomap-layers/blob/main/LICENSE"
+      }
+    ],
+    "screenshots": [
+      {
+        "name": "Layers legend",
+        "path": "img/screenshot-layers.jpg"
+      },
+      {
+        "name": "Demo dashboard",
+        "path": "img/screenshot-dashboard.jpg"
+      }
+    ],
+    "version": "%VERSION%",
+    "updated": "%TODAY%"
+  },
+  "dependencies": {
+    "grafanaDependency": ">=11.0.0",
+    "plugins": []
+  }
+}

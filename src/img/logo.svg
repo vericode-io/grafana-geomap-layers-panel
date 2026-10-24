@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000">
+  <defs>
+    <linearGradient id="pin" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#F2C80F"/>
+      <stop offset="1" stop-color="#FF9A2E"/>
+    </linearGradient>
+    <path id="pinShape" d="M500 470 L365.5 280.5 A165 165 0 1 1 634.5 280.5 Z"/>
+    <!-- recorte transparente em volta do pino -->
+    <mask id="pinGap" maskUnits="userSpaceOnUse" x="0" y="0" width="1000" height="1000">
+      <rect width="1000" height="1000" fill="#fff"/>
+      <use href="#pinShape" fill="#000" stroke="#000" stroke-width="100" stroke-linejoin="round"/>
+    </mask>
+  </defs>
+
+  <g fill="none" stroke="#3A65AB" stroke-width="84" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Layer de cima: losango com contorno -->
+    <polygon points="62,330 500,111 938,330 500,549" fill="#84AEF0" stroke="#84AEF0" mask="url(#pinGap)"/>
+    <!-- Layers de baixo: chevrons -->
+    <polyline points="62,520 500,739 938,520"/>
+    <polyline points="62,710 500,929 938,710" stroke="#84AEF0"/>
+  </g>
+
+  <!-- Pino com furo vazado -->
+  <path d="M500 470 L365.5 280.5 A165 165 0 1 1 634.5 280.5 Z M500 123 A62 62 0 1 0 500 247 A62 62 0 1 0 500 123 Z" fill="url(#pin)" fill-rule="evenodd"/>
+</svg>
