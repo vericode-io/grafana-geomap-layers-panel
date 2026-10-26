@@ -1,45 +1,48 @@
 # Geomap Layers
 
-A página do repositório, em inglês, está em [README.md](../README.md). Este arquivo é o overview em português.
+Guia em português. A página curta do repositório (inglês, estilo catálogo Grafana) está em [README.md](../README.md).
 
-Painel do Grafana baseado no **Geomap** nativo, com legenda para mostrar ou ocultar cada layer (incluindo o basemap). O id é `vericode-geomaplayers-panel`. O nome no Grafana é **Geomap Layers**. Exige Grafana 11.0.0 ou mais novo e ainda não tem assinatura.
+## O que é
 
-É um fork do painel Geomap do Grafana (OpenLayers), licença **AGPL-3.0**. Mantém basemap, markers, GeoJSON, route, tiles XYZ, tooltip, measure e controles de mapa. O que o nativo não traz — e motivou este plugin — é o controle fino de visibilidade das layers na operação e a ligação com variável de dashboard / URL.
+Painel Grafana baseado no **Geomap** nativo, com legenda para mostrar ou ocultar cada layer (incluindo o basemap), e sync opcional com variável de dashboard / URL.
 
-## Por que não só o Geomap nativo
+- **Id:** `vericode-geomaplayers-panel`
+- **Nome no Grafana:** Geomap Layers
+- **Grafana:** 12.0.0 ou mais novo
+- **Licença:** AGPL-3.0 (por derivar do Geomap do Grafana)
 
-No Geomap padrão não há uma legenda simples para ligar/desligar cada layer (incluindo o mapa base) no painel. Em dashboards ONS/operacionais isso aparece o tempo todo: “mostrar só usinas e rota”, “esconder satélite”, compartilhar um link com o conjunto certo já aberto.
+Ainda sem assinatura: precisa do id na allow-list de plugins unsigned.
 
-Este painel resolve isso no runtime, sem editar o JSON do painel a cada vez.
+## Por que existe
+
+No Geomap padrão não há legenda simples para ligar/desligar cada layer (incluindo o mapa base) na operação. Em dashboards ONS/operacionais isso é constante: “só usinas e rota”, “esconder satélite”, link com o conjunto certo já aberto — sem editar o JSON do painel a cada vez.
 
 ## O que este plugin faz
 
+Mantém o motor do Geomap (OpenLayers): basemap, markers, GeoJSON, route, tiles XYZ, tooltip, measure, controles de mapa.
+
 ### Legenda Layers
 
-Controle no **canto superior esquerdo** (abaixo do zoom, se o zoom estiver ligado):
+Controle no **canto superior esquerdo** (abaixo do zoom, se estiver ligado):
 
 - Ícone de **2 layers** → abre a lista
 - **X** → fecha
 - Checkboxes por layer (nome configurado no painel)
 
-A legenda mexe só no estado visual do mapa. Não grava de volta na variável do dashboard.
+A legenda mexe só na visibilidade do mapa. **Não** grava de volta na variável do dashboard.
 
 ### Sync com variável / URL
 
-Opção em **Map controls**:
+Em **Map controls**:
 
 - **Sync layers to dashboard variable**
-- **Layers variable name** (padrão: `mapLayers`)
+- **Layers variable name** (ex.: `mapLayers`)
 
-Fluxo **unidirecional**:
-
-1. Usuário muda a **combo** (ou a URL `var-mapLayers=...`)
-2. Todos os painéis com sync ligado aplicam a visibilidade
-3. Se o usuário só marcar/desmarcar na legenda, a combo **não** muda
+Fluxo **unidirecional**: combo ou URL → painéis sincronizados. Mudança só na legenda **não** altera a combo.
 
 `All` = todas as layers visíveis.
 
-### Presets (vários layers num item da combo)
+### Presets (`|`)
 
 Na variável Custom do Grafana, use `Rótulo : valor` e junte nomes com `|`:
 
@@ -47,17 +50,20 @@ Na variável Custom do Grafana, use `Rótulo : valor` e junte nomes com `|`:
 Principal (Usinas & Rotas) : Usinas|Rota, Basemap, Satelite, Regioes, Usinas, Rota
 ```
 
-- Na combo aparece **Principal (Usinas & Rotas)**
-- No load / mudança, o plugin aplica `Usinas` e `Rota`
-- Os nomes precisam ser **iguais** aos nomes das layers no painel
+- Na combo: **Principal (Usinas & Rotas)**
+- Aplicado: `Usinas` e `Rota`
+- Nomes devem ser **iguais** aos **Name** das layers no painel
 
-URL de exemplo:
+URL:
 
 ```
 .../d/<uid>?var-mapLayers=Usinas|Rota
+.../d/<uid>?var-mapLayers=Usinas&var-mapLayers=Regioes
 ```
 
-## Demo local
+## Instalação
+
+### Desenvolvimento local
 
 ```bash
 npm install
@@ -65,12 +71,27 @@ npm run build
 npm run server
 ```
 
-http://localhost:3000 — dashboard provisionado `geomap-layers.json` (home):
+http://localhost:3000 — login **admin / admin**. Home = dashboard provisionado `geomap-layers.json` (painel principal + exemplos Markers / GeoJSON / Route / XYZ, variável `mapLayers`, GeoJSON de demo).
 
-- Painel principal com Basemap, Satelite, Usinas, Regioes, Rota
-- Quatro painéis de exemplo (Markers, GeoJSON, Route, XYZ)
-- Variável `mapLayers` com preset Principal
-- GeoJSON de demo montado em `public/maps/ons-demo.geojson` no container
+### Em um Grafana existente
+
+1. `npm run build` → pasta `dist/`
+2. Copie como `vericode-geomaplayers-panel` no diretório de plugins
+3. Allow-list:
+
+```ini
+[plugins]
+allow_loading_unsigned_plugins = vericode-geomaplayers-panel
+```
+
+4. Reinicie o Grafana
+
+## Como usar
+
+1. Adicione o painel **Geomap Layers**
+2. Configure basemap e layers de dados (dê nomes claros)
+3. Use o controle **Layers** no mapa para show/hide
+4. Opcional: crie a variável Custom, ligue o sync nas opções do painel
 
 ## Peças principais (código)
 
@@ -81,23 +102,17 @@ http://localhost:3000 — dashboard provisionado `geomap-layers.json` (home):
 | Variável / presets `|` | `src/geomap/utils/layersVariable.ts` |
 | Opções do editor | `src/module.tsx` |
 | Dashboard demo | `provisioning/dashboards/geomap-layers.json` |
-| Logo | `src/img/logo.png` |
+| Logo | `src/img/logo.svg` |
 
-## Instalação
+## Desenvolvimento (atalhos)
 
-Na raiz, `npm install` e `npm run build` geram `dist/`. A pasta no Grafana deve se chamar `vericode-geomaplayers-panel` e conter `plugin.json` e `module.js`.
-
-```ini
-[plugins]
-allow_loading_unsigned_plugins = vericode-geomaplayers-panel
-```
-
-Reinicie o Grafana. Se aparecer "Plugin not signed", o id não está na allow-list ou o serviço não reiniciou.
-
-## Logo
-
-Ícone atual: SVG (`src/img/logo.svg`). Na UI o tamanho típico é ~48×48.
+| Comando | Função |
+| --- | --- |
+| `npm run build` | Build → `dist/` |
+| `npm run dev` | Watch |
+| `npm run typecheck` / `lint` / `test:ci` | Gates de CI |
+| `npm run server` | Grafana 12 via Docker Compose |
 
 ## Licença
 
-GNU Affero General Public License v3.0 (AGPL-3.0), por derivar do Geomap do Grafana.
+GNU Affero General Public License v3.0 (AGPL-3.0). Baseado no painel Geomap do Grafana.
