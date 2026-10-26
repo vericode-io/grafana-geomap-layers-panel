@@ -13,7 +13,7 @@ export function SliderValueEditor({
 
   return (
     <Slider
-      id={id}
+      inputId={id ?? 'slider-value-editor'}
       min={min}
       max={max}
       step={settings.step ?? 0.1}

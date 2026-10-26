@@ -15,7 +15,7 @@ import * as ui from '@grafana/schema';
 export interface Options {
   basemap: ui.MapLayerOptions;
   controls: ControlsOptions;
-  layers: Array<ui.MapLayerOptions>;
+  layers: ui.MapLayerOptions[];
   tooltip: TooltipOptions;
   view: MapViewConfig;
 }

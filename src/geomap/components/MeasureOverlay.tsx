@@ -131,7 +131,6 @@ const getStyles = (theme: GrafanaTheme2) => ({
   infoWrap: css({
     color: `${theme.colors.text}`,
     backgroundColor: theme.colors.background.secondary,
-    // eslint-disable-next-line @grafana/no-border-radius-literal
     borderRadius: '4px',
     padding: '2px',
   }),

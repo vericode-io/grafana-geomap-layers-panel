@@ -32,6 +32,7 @@ type ScenePanel = {
 
 type SceneProto = {
   changePluginType: ScenePanel['changePluginType'];
+  state?: ScenePanel['state'];
   [SCENE_PATCH]?: boolean;
 };
 

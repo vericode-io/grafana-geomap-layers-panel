@@ -605,7 +605,6 @@ export class GeomapPanel extends Component<Props, State> {
           <div
             role="application"
             className={styles.map}
-            // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
             tabIndex={0} // Interactivity is added through the ref
             aria-label={t('geomap.geomap-panel.aria-label-map', 'Navigable map')}
             ref={this.initMapRef}

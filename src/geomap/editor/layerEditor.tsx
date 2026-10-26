@@ -4,8 +4,7 @@ import {
   FrameGeometrySourceMode,
   getFrameMatchers,
   type MapLayerOptions,
-  type NestedPanelOptions,
-  type NestedValueAccess,
+  type PanelOptionsEditorBuilder,
 } from '@grafana/data';
 import { t } from '@grafana/i18n';
 
@@ -16,6 +15,9 @@ import { type MapLayerState } from '../types';
 import { FrameSelectionEditor } from './FrameSelectionEditor';
 import { addLocationFields } from './locationFields';
 import { setOptionImmutably } from './setOptionImmutably';
+
+/** NestedPanelOptions is not re-exported from @grafana/data index; derive from builder API. */
+type NestedPanelOptions<T> = Parameters<PanelOptionsEditorBuilder<T>['addNestedOptions']>[0];
 
 export interface LayerEditorOptions {
   state: MapLayerState;
@@ -28,7 +30,7 @@ export function getLayerEditor(opts: LayerEditorOptions): NestedPanelOptions<Map
     category: opts.category,
     path: '--',
     defaultValue: opts.basemaps ? DEFAULT_BASEMAP_CONFIG : defaultMarkersConfig,
-    values: (_parent: NestedValueAccess) => ({
+    values: (_parent) => ({
       getContext: (parent) => {
         return { ...parent, options: opts.state.options, instanceState: opts.state };
       },
@@ -103,7 +105,8 @@ export function getLayerEditor(opts: LayerEditorOptions): NestedPanelOptions<Map
         addLocationFields('Location', 'location.', builder, options.location, data);
       }
 
-      handler.registerOptionsUI?.(builder, context);
+      // Nested builder/context are typed as unknown by SDK; layer handlers expect MapLayerOptions.
+      handler.registerOptionsUI?.(builder as never, context as never);
 
       if (!isEqual(opts.category, [t('geomap.layer-editor.category-base-layer', 'Base layer')])) {
         if (!layer.hideOpacity) {

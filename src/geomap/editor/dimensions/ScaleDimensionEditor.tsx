@@ -44,7 +44,7 @@ export function ScaleDimensionEditor({
                 value={current.fixed}
                 min={item.settings?.min}
                 max={item.settings?.max}
-                onChange={(fixed) => onChange({ ...current, field: undefined, fixed })}
+                onChange={(fixed) => onChange({ ...current, field: undefined, fixed: fixed ?? 0 })}
               />
             </InlineField>
           </InlineFieldRow>

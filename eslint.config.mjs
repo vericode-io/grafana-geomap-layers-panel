@@ -1,4 +1,4 @@
-import { defineConfig } from 'eslint/config';
+﻿import { defineConfig } from 'eslint/config';
 import baseConfig from './.config/eslint.config.mjs';
 
 export default defineConfig([
@@ -36,4 +36,12 @@ export default defineConfig([
     ],
   },
   ...baseConfig,
+  {
+    rules: {
+      'react/react-in-jsx-scope': 'off',
+      // OpenLayers/map code captures instances via refs in callbacks.
+      'react-hooks/refs': 'off',
+      'react-hooks/preserve-manual-memoization': 'off',
+    },
+  },
 ]);

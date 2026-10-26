@@ -48,7 +48,14 @@ export function TextDimensionEditor({ value, onChange, context }: StandardEditor
               onChange={(event) => onChange({ ...current, mode: TextDimensionMode.Fixed, fixed: event.currentTarget.value })}
               suffix={
                 current.fixed ? (
-                  <Button icon="times" variant="secondary" fill="text" size="sm" onClick={() => onChange({ ...current, fixed: '' })} />
+                  <Button
+                    icon="times"
+                    variant="secondary"
+                    fill="text"
+                    size="sm"
+                    aria-label="Clear"
+                    onClick={() => onChange({ ...current, fixed: '' })}
+                  />
                 ) : undefined
               }
             />
