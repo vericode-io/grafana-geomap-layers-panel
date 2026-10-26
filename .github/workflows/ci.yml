@@ -89,9 +89,11 @@ jobs:
             echo "has-e2e=true" >> $GITHUB_OUTPUT
           fi
 
-      - name: Sign plugin
-        run: npm run sign
-        if: ${{ env.GRAFANA_ACCESS_POLICY_TOKEN != '' }}
+      # Signing disabled for now (unsigned allow-list). Re-enable with rootUrls for private
+      # plugins or after catalog approval for public signing.
+      # - name: Sign plugin
+      #   run: npm run sign -- --rootUrls "${{ secrets.PLUGIN_ROOT_URLS }}"
+      #   if: ${{ env.GRAFANA_ACCESS_POLICY_TOKEN != '' }}
 
       - name: Get plugin metadata
         id: metadata
@@ -202,7 +204,7 @@ jobs:
       - name: Docker logs
         if: ${{ always() && steps.run-tests.outcome == 'failure' }}
         run: |
-          docker logs plugin-panel-template >& grafana-server.log
+          docker logs vericode-geomaplayers-panel >& grafana-server.log
 
       - name: Stop grafana docker
         run: docker compose down
