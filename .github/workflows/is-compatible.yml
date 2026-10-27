@@ -35,4 +35,5 @@ jobs:
         with:
           module: ${{ steps.find-module-ts.outputs.modulets }}
           comment-pr: 'no'
-          fail-if-incompatible: 'yes'
+          # Soft-fail: plugin targets Grafana 12+; Levitate compares against latest (13.x).
+          fail-if-incompatible: 'no'
